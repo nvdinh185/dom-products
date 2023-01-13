@@ -8,19 +8,6 @@ var checkboxElement = document.createElement('input');
 checkboxElement.type = 'checkbox';
 formElement.appendChild(checkboxElement);
 
-const tbElement = document.querySelector('#tbl');
-
-// Tiêu đề
-const tr1Element = document.createElement('tr');
-
-const th1Element = document.createElement('th');
-th1Element.innerText = 'Name';
-tr1Element.appendChild(th1Element);
-const th2Element = document.createElement('th');
-th2Element.innerText = 'Price';
-tr1Element.appendChild(th2Element);
-tbElement.appendChild(tr1Element);
-
 const PRODUCTS = [
     { category: 'Sporting Goods', price: '$49.99', stocked: true, name: 'Football' },
     { category: 'Sporting Goods', price: '$9.99', stocked: true, name: 'Baseball' },
@@ -30,7 +17,30 @@ const PRODUCTS = [
     { category: 'Electronics', price: '$199.99', stocked: true, name: 'Nexus 7' }
 ];
 
+const tbElement = document.querySelector('#tbl');
+
+function renderTitle() {
+
+    const headElement = document.createElement('thead');
+    const tr1Element = document.createElement('tr');
+
+    const th1Element = document.createElement('th');
+    th1Element.innerText = 'Name';
+    tr1Element.appendChild(th1Element);
+    const th2Element = document.createElement('th');
+    th2Element.innerText = 'Price';
+    tr1Element.appendChild(th2Element);
+    headElement.appendChild(tr1Element);
+    tbElement.appendChild(headElement);
+}
+
 function renderProducts(products) {
+
+    var tbody = document.getElementsByTagName('tbody');
+    if (tbody[0]) {
+        tbody[0].remove();
+    }
+    const bodyElement = document.createElement('tbody');
     let lastCategory = null;
     products.forEach(function (pro) {
 
@@ -45,7 +55,7 @@ function renderProducts(products) {
             })
             tdElement.innerText = pro.category;
             trElement.appendChild(tdElement);
-            tbElement.appendChild(trElement);
+            bodyElement.appendChild(trElement);
         }
         const tr2Element = document.createElement('tr');
 
@@ -60,20 +70,21 @@ function renderProducts(products) {
             td2Element.setAttribute('style', 'color:red;');
         }
 
-        tbElement.appendChild(tr2Element);
+        bodyElement.appendChild(tr2Element);
+        tbElement.appendChild(bodyElement);
         lastCategory = pro.category;
 
     })
 }
 
+// Tiêu đề
+renderTitle();
 // Nội dung
 renderProducts(PRODUCTS);
 
 searchElement.oninput = function (e) {
-    // console.log(e.target.value);
     var listPro = PRODUCTS.filter(function (pro) {
         return pro.name.includes(e.target.value);
     });
-    // console.log(listPro);
     renderProducts(listPro);
 }
