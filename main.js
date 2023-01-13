@@ -6,7 +6,10 @@ var brElement = document.createElement('br');
 formElement.appendChild(brElement);
 var checkboxElement = document.createElement('input');
 checkboxElement.type = 'checkbox';
+var labelElement = document.createElement('label');
+labelElement.innerText = 'Only show products in stock';
 formElement.appendChild(checkboxElement);
+formElement.appendChild(labelElement);
 
 const PRODUCTS = [
     { category: 'Sporting Goods', price: '$49.99', stocked: true, name: 'Football' },
@@ -50,7 +53,7 @@ function renderProducts(products) {
             tdElement.setAttribute('colspan', 2);
             Object.assign(tdElement.style, {
                 backgroundColor: '#FAEBD7',
-                color: 'green',
+                color: 'blue',
                 textAlign: 'center'
             })
             tdElement.innerText = pro.category;
@@ -87,4 +90,15 @@ searchElement.oninput = function (e) {
         return pro.name.includes(e.target.value);
     });
     renderProducts(listPro);
+}
+
+checkboxElement.onchange = function (e) {
+    if (e.target.checked) {
+        var listPro = PRODUCTS.filter(function (pro) {
+            return pro.stocked === e.target.checked;
+        });
+        renderProducts(listPro);
+    } else {
+        renderProducts(PRODUCTS);
+    }
 }
