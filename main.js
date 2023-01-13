@@ -37,7 +37,7 @@ function renderTitle() {
     tbElement.appendChild(headElement);
 }
 
-function renderProducts(products) {
+function renderProducts(products, filterText = '', inStockOnly = false) {
 
     var tbody = document.getElementsByTagName('tbody');
     if (tbody[0]) {
@@ -46,6 +46,12 @@ function renderProducts(products) {
     const bodyElement = document.createElement('tbody');
     let lastCategory = null;
     products.forEach(function (pro) {
+        if (pro.name.indexOf(filterText) === -1) {
+            return;
+        }
+        if (inStockOnly && !pro.stocked) {
+            return;
+        }
 
         if (pro.category !== lastCategory) {
             const trElement = document.createElement('tr');
@@ -84,21 +90,15 @@ function renderProducts(products) {
 renderTitle();
 // Nội dung
 renderProducts(PRODUCTS);
-
+var filterText = '';
+var inStockOnly = false;
 searchElement.oninput = function (e) {
-    var listPro = PRODUCTS.filter(function (pro) {
-        return pro.name.includes(e.target.value);
-    });
-    renderProducts(listPro);
+    filterText = e.target.value;
+    renderProducts(PRODUCTS, filterText, inStockOnly);
 }
 
 checkboxElement.onchange = function (e) {
-    if (e.target.checked) {
-        var listPro = PRODUCTS.filter(function (pro) {
-            return pro.stocked === e.target.checked;
-        });
-        renderProducts(listPro);
-    } else {
-        renderProducts(PRODUCTS);
-    }
+    inStockOnly = e.target.checked;
+    renderProducts(PRODUCTS, filterText, inStockOnly);
+
 }
