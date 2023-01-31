@@ -44,7 +44,7 @@ function renderProducts(products, filterText = '', inStockOnly = false) {
         tbody[0].remove();
     }
     const bodyElement = document.createElement('tbody');
-    let lastCategory = null;
+    var lastCategory = null;
     products.forEach(function (pro) {
         if (pro.name.indexOf(filterText) === -1) {
             return;
