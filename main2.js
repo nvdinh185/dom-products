@@ -34,11 +34,11 @@ function renderHead() {
 
 function renderProducts(products, filterText = '', inStockOnly = false) {
 
-    var tbody = document.getElementsByTagName('tbody');
-    if (tbody[0]) {
-        tbody[0].remove();
+    var bodyElement = document.getElementsByTagName('tbody');
+    if (bodyElement[0]) {
+        bodyElement[0].remove();
     }
-    const bodyElement = document.createElement('tbody');
+    bodyElement = document.createElement('tbody');
     var lastCategory = null;
     products.forEach(function (pro) {
         if (pro.name.indexOf(filterText) === -1) {
@@ -91,5 +91,4 @@ formElement.querySelector('input[type="text"]').oninput = function (e) {
 formElement.querySelector('input[type="checkbox"]').onchange = function (e) {
     inStockOnly = e.target.checked;
     renderProducts(PRODUCTS, filterText, inStockOnly);
-
 }
